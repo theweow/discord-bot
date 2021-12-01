@@ -1,0 +1,19 @@
+{
+  "name": "weow-bot",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "ts-node src/main.ts"
+  },
+  "keywords": [],
+  "author": "pluffie",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "captchagen": "^1.2.0",
+    "colors": "^1.4.0",
+    "discord-api-types": "^0.24.0",
+    "discord-reply": "^0.1.2",
+    "discord.js": "^13.3.1"
+  }
+}
