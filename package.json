@@ -7,8 +7,7 @@
     },
     "scripts": {
         "build": "tsc --build",
-        "start": "node ./build/main.js",
-        "serve": "ts-node ./src/main.ts"
+        "start": "ts-node ./src/main.ts"
     },
     "keywords": [],
     "author": "pluffie",
@@ -19,6 +18,7 @@
         "discord-api-types": "^0.24.0",
         "discord.js": "^13.3.1",
         "moment": "^2.29.1",
+        "pm2": "^5.1.2",
         "typescript": "^4.4.4"
     }
 }

@@ -1,1 +1,1 @@
-worker: npm start
+worker: npx pm2 start ./build/main.js
