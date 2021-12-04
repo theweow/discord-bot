@@ -3,9 +3,10 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "start": "ts-node src/main.ts"
+        "build": "tsc build",
+        "start": "node ./build/main.js",
+        "serve": "ts-node ./src/main.ts"
     },
-    "module": "system",
     "keywords": [],
     "author": "pluffie",
     "license": "ISC",
