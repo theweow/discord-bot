@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "tsc build",
+        "build": "tsc --build",
         "start": "node ./build/main.js",
         "serve": "ts-node ./src/main.ts"
     },
