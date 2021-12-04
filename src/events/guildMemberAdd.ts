@@ -1,4 +1,5 @@
 import { GuildMember, MessageEmbed } from "discord.js"
+import moment from "moment"
 
 export function execute(member: GuildMember) {
     member.guild.systemChannel.send({
@@ -10,7 +11,7 @@ export function execute(member: GuildMember) {
                 .addField("Username", member.user.username, true)
                 .addField("ID", member.id, true)
                 .addField("Tag", member.user.toString(), true)
-                .addField("Account creation date", member.user.createdAt.toDateString(), false)
+                .addField("Account age", moment(member.user.createdAt).fromNow(true), false)
                 .setTimestamp()
         ]
     })
