@@ -10,8 +10,8 @@ export const wait: (time: number) => void = require('util').promisify(setTimeout
 
 /**
  * Filters message
+ * 
  * @param msg Message
- * @param client Client (for event emit)
  * @returns Did message passed filter
  */
 export function messageFilter(msg: Message): boolean {
