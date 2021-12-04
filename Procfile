@@ -1,1 +1,1 @@
-worker: npx pm2-runtime start ecosystem.config.js
+worker: npx pm2-runtime reload ecosystem.config.js
