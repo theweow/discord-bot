@@ -2,21 +2,24 @@ import { SlashCommandBuilder } from "@discordjs/builders"
 import { ApplicationCommandPermissionData, ColorResolvable, CommandInteraction, GuildTextBasedChannel, MessageEmbed } from "discord.js"
 
 export const data = new SlashCommandBuilder()
-    .setName("post")
-    .setDescription("Posts to news channel")
-    .addStringOption(option =>
-        option.setName("title")
-            .setDescription("Title of article")
-            .setRequired(true))
-    .addStringOption(option =>
-        option.setName("content")
-            .setDescription("Content to be posted")
-            .setRequired(true))
-    .addStringOption(option =>
-        option.setName("color")
-            .setDescription("Embed color")
-            .setRequired(false))
     .setDefaultPermission(false)
+    .setName("news")
+    .setDescription("Root command for news channels")
+    .addSubcommand(sub =>
+        sub.setName("post")
+            .setDescription("Posts to news channel")
+            .addStringOption(option =>
+                option.setName("title")
+                    .setDescription("Title of article")
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName("content")
+                    .setDescription("Content to be posted")
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName("color")
+                    .setDescription("Embed color")
+                    .setRequired(false)))
 
 export const permissions: ApplicationCommandPermissionData[] = [
     {
