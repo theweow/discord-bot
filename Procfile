@@ -1,1 +1,1 @@
-worker: npx pm2 start ./build/main.js
+worker: npx pm2-runtime start ecosystem.config.js
