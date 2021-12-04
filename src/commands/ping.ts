@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { ApplicationCommandPermissionData, CommandInteraction, MessageEmbed } from "discord.js"
+import { client } from "../main"
 
 export const data = new SlashCommandBuilder()
     .setDefaultPermission(true)
@@ -9,5 +10,5 @@ export const data = new SlashCommandBuilder()
 export const permissions: ApplicationCommandPermissionData[] = []
 
 export function execute(interaction: CommandInteraction) {
-    interaction.editReply(`Pong: ${Date.now() - interaction.createdTimestamp}ms`)
+    interaction.editReply(`Ping: ${client.ws.ping}ms`)
 }
