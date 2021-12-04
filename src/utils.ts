@@ -59,12 +59,12 @@ export function messageFilter(msg: Message): boolean {
         return false
     }
 
-    if (msg.content == lastMsg?.content) {
-        setAutoAction()
-        setReason("Flood")
-        msg.delete()
-        return false
-    }
+    // if (msg.content == lastMsg?.content) {
+    //     setAutoAction()
+    //     setReason("Flood")
+    //     msg.delete()
+    //     return false
+    // }
 
     return true
 }
