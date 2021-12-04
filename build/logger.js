@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.success = exports.progress = exports.warn = exports.error = exports.debug = exports.info = void 0;
+require("colors");
+const info = (...data) => console.log("INFO".blue, ...data);
+exports.info = info;
+const debug = (...data) => console.log("DEBUG".yellow, ...data);
+exports.debug = debug;
+const error = (...data) => console.log("ERROR".red.bold, ...data);
+exports.error = error;
+const warn = (...data) => console.log("WARN".yellow.bold, ...data);
+exports.warn = warn;
+var inProgress;
+const progress = (...data) => {
+    inProgress = data;
+    console.log("...".blue, ...data);
+};
+exports.progress = progress;
+const success = () => console.log("OK".green, ...inProgress);
+exports.success = success;

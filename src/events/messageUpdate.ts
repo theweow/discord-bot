@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed, TextChannel } from "discord.js"
+import { Client, Message, MessageActionRow, MessageButton, MessageEmbed, TextChannel } from "discord.js"
 import utils from "../utils"
 
 export function execute(client: Client) {
@@ -11,12 +11,20 @@ export function execute(client: Client) {
                 new MessageEmbed()
                     .setColor("#2962ff")
                     .setTitle("Message was edited")
-                    .setURL(utils.generateChannelLink(msg.channel as TextChannel))
                     .addField("Old content", `> ${oldMsg.content}`, false)
                     .addField("New content", `> ${newMsg.content}`, false)
                     .addField("Author", `> ${msg.author}`, true)
                     .addField("Channel", `> ${msg.channel}`, true)
                     .setTimestamp()
+            ],
+            components: [
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle("LINK")
+                            .setLabel("Message")
+                            .setURL(msg.url)
+                    )
             ]
         })
 

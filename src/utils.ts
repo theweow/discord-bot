@@ -1,13 +1,12 @@
-import { GuildTextBasedChannel, Message } from "discord.js"
+import { Message, MessageActionRow, MessageButton, MessageEmbed } from "discord.js"
 import { setAutoAction, setReason } from "./events/messageDelete"
-import * as logger from "./logger"
 
 /**
- * Generates channel link
- * @param channel Channel
- * @returns Channel link
+ * Just waits
+ * 
+ * @param time time in milliseconds
  */
-export const generateChannelLink = (channel: GuildTextBasedChannel): string => `https://discord.com/channels/${channel.guildId}/${channel.id}/`
+export const wait: (time: number) => void = require('util').promisify(setTimeout)
 
 /**
  * Filters message
@@ -16,16 +15,43 @@ export const generateChannelLink = (channel: GuildTextBasedChannel): string => `
  * @returns Did message passed filter
  */
 export function messageFilter(msg: Message): boolean {
-    // Anti-piar
+    // Anti-spam
     if (msg.content.toLowerCase().includes("discord.gg/")) {
+        setAutoAction()
         setReason("Link to discord server")
         if (msg.deletable) msg.delete()
         return false
     }
 
+    if (msg.content.toLowerCase().includes("http")) {
+        msg.guild.systemChannel.send({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("Suspicious message detected")
+                    .setColor("#ff6d00")
+                    .addField("Content", `> ${msg.content}`, false)
+                    .addField("Author", `> ${msg.author}`, true)
+                    .addField("Channel", `> ${msg.channel}`, true)
+                    .addField("Why", "> Contains link-like text", true)
+                    .setTimestamp()
+            ],
+            components: [
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setLabel("Message")
+                            .setStyle("LINK")
+                            .setURL(msg.url)
+                    )
+            ]
+        })
+    }
+
     // Anti-Flood
-    const lastMsg = msg.channel.messages.cache.filter(m => m.author == msg.author).last(2)
-    const timeElapsed = msg.createdTimestamp - lastMsg[0]?.createdTimestamp
+    const lastMsg = msg.channel.messages.cache.filter(m => m.author == msg.author).last(2)[0]
+    const timeElapsed = msg.createdTimestamp - lastMsg?.createdTimestamp
+    if (lastMsg == msg) return
+
     if (timeElapsed < 500 && timeElapsed > 0) {
         setAutoAction()
         setReason("Flood")
@@ -33,10 +59,10 @@ export function messageFilter(msg: Message): boolean {
         return false
     }
 
-    if (lastMsg[1]?.content == lastMsg[0]?.content) {
+    if (msg.content == lastMsg?.content) {
         setAutoAction()
         setReason("Flood")
-        lastMsg[1].delete()
+        msg.delete()
         return false
     }
 
@@ -44,6 +70,6 @@ export function messageFilter(msg: Message): boolean {
 }
 
 export default {
-    generateChannelLink: generateChannelLink,
     messageFilter: messageFilter,
+    wait: wait,
 }

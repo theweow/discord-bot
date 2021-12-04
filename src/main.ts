@@ -3,7 +3,7 @@ import Discord from "discord.js"
 import { REST } from "@discordjs/rest"
 import { Routes } from "discord-api-types/v9"
 import * as fs from "fs"
-import config from "./config.json"
+const config = require("../config.json")
 import * as logger from "./logger"
 import registerHandlers from "./registerHandlers"
 
@@ -42,8 +42,10 @@ const rest = new REST({ version: '9' }).setToken(env.WEOW_BOT_TOKEN);
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand())
         try {
-            await interaction.deferReply()
-            require(`./commands/${interaction.commandName}.ts`).execute(interaction)
+            await interaction.deferReply({
+                ephemeral: true
+            })
+            require(`./commands/${interaction.commandName}`).execute(interaction)
         } catch (err) {
             interaction.editReply(err.toString() || "Unable to get error")
             logger.error(err.toString())
@@ -53,15 +55,11 @@ client.on('interactionCreate', async interaction => {
 // Ready event
 client.once("ready", () => {
     logger.info(`${client.user.tag} is online!`)
-    client.user.setActivity({
-        type: "WATCHING",
-        name: "for the server"
-    })
 
     client.application.fetch().then(application => {
         application.commands.fetch().then(commands => {
             commands.each(command => {
-                const permissions = require(`./commands/${command.name}.ts`).permissions
+                const permissions = require(`./commands/${command.name}`).permissions
                 client.guilds.cache.each(guild => command.permissions.set({ guild, permissions }))
             })
         })

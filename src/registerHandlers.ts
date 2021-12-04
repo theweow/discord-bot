@@ -8,7 +8,7 @@ var client: Client
 function _baseLoad() {
     const eventFiles = fs.readdirSync(__dirname + "/events")
     for (const eventFile of eventFiles) {
-        const basename = path.basename(eventFile, ".ts")
+        const basename = path.basename(eventFile, path.extname(eventFile))
         logger.progress("Register event:", basename)
         client.removeAllListeners(basename)
         client.on(basename, require(`./events/${eventFile}`).execute(client))

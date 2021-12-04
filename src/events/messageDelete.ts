@@ -28,17 +28,6 @@ export function execute(client: Client) {
                     .setTimestamp()
             ]
         }
-
-        if (isAutoAction)
-            logMsgData.components = [
-                new MessageActionRow()
-                    .addComponents(
-                        new MessageButton()
-                            .setLabel("Ban")
-                            .setStyle("DANGER")
-                    )
-            ]
-
         msg.guild.systemChannel.send(logMsgData)
 
         reason = defaultReason
