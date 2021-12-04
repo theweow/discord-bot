@@ -7,7 +7,7 @@ import * as logger from "./logger"
 import registerHandlers from "./registerHandlers"
 
 // Init
-const client = new Discord.Client({
+export const client = new Discord.Client({
     intents: [
         Discord.Intents.FLAGS.DIRECT_MESSAGES,
         Discord.Intents.FLAGS.GUILDS,

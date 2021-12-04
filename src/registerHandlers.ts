@@ -11,13 +11,12 @@ function _baseLoad() {
         const basename = path.basename(eventFile, path.extname(eventFile))
         logger.progress("Register event:", basename)
         client.removeAllListeners(basename)
-        client.on(basename, require(`./events/${eventFile}`).execute(client))
+        client.on(basename, require(`./events/${eventFile}`).execute)
         logger.success()
     }
 }
 
-export default function registerHandlers(_client: Client) {
-    client = _client
+export default function registerHandlers() {
     _baseLoad()
 }
 

@@ -1,4 +1,4 @@
-import { Client, Message, MessageActionRow, MessageButton, MessageEmbed, MessageOptions } from "discord.js"
+import { Message, MessageEmbed, MessageOptions } from "discord.js"
 
 const defaultReason = "No reason provided"
 var reason: string = defaultReason
@@ -12,25 +12,23 @@ export function setAutoAction() {
     isAutoAction = true
 }
 
-export function execute(client: Client) {
-    return (msg: Message) => {
-        if (msg.content == "") return
+export function execute(msg: Message) {
+    if (msg.content == "") return
 
-        const logMsgData: MessageOptions = {
-            embeds: [
-                new MessageEmbed()
-                    .setColor("#d50000")
-                    .setTitle("Message was deleted")
-                    .addField("Content", `> ${msg.content}`, false)
-                    .addField("Author", `> ${msg.author}`, true)
-                    .addField("Channel", `> ${msg.channel}`, true)
-                    .addField("Reason", `> ${reason}`, true)
-                    .setTimestamp()
-            ]
-        }
-        msg.guild.systemChannel.send(logMsgData)
-
-        reason = defaultReason
-        isAutoAction = false
+    const logMsgData: MessageOptions = {
+        embeds: [
+            new MessageEmbed()
+                .setColor("#d50000")
+                .setTitle("Message was deleted")
+                .addField("Content", `> ${msg.content}`, false)
+                .addField("Author", `> ${msg.author}`, true)
+                .addField("Channel", `> ${msg.channel}`, true)
+                .addField("Reason", `> ${reason}`, true)
+                .setTimestamp()
+        ]
     }
+    msg.guild.systemChannel.send(logMsgData)
+
+    reason = defaultReason
+    isAutoAction = false
 }
