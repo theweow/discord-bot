@@ -2,6 +2,9 @@
     "name": "weow-bot",
     "version": "1.0.0",
     "description": "",
+    "engines": {
+        "node": ">= 16.0.0"
+    },
     "scripts": {
         "build": "tsc --build",
         "start": "node ./build/main.js",
