@@ -1,9 +1,7 @@
-import { Client } from "discord.js"
 import fs from "fs"
 import path from "path"
 import * as logger from "./logger"
-
-var client: Client
+import { client } from "./main"
 
 function _baseLoad() {
     const eventFiles = fs.readdirSync(__dirname + "/events")
