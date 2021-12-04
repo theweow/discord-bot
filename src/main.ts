@@ -65,7 +65,7 @@ client.once("ready", () => {
     })()
 })
 
-registerHandlers(client)
+registerHandlers()
 
 // Login
 client.login(env.WEOW_BOT_TOKEN)
