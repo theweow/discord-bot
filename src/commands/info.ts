@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
-import { ApplicationCommandPermissionData, CommandInteraction, MessageActionRow, MessageButton, MessageEmbed } from "discord.js"
+import { ApplicationCommandPermissionData, CategoryChannel, CommandInteraction, MessageActionRow, MessageButton, MessageEmbed } from "discord.js"
 import moment from "moment"
 import { client } from "../main"
 
@@ -18,37 +18,38 @@ export const permissions: ApplicationCommandPermissionData[] = []
 
 export function execute(interaction: CommandInteraction) {
     const guild = interaction.guild
-    var comps: MessageActionRow[] = []
-
-    if (interaction.guild.rulesChannel.lastMessage)
-        comps = [
-            new MessageActionRow()
-                .addComponents(
-                    new MessageButton()
-                        .setStyle("LINK")
-                        .setLabel("Rules channel")
-                        .setURL(guild.rulesChannel.lastMessage.url)
-                )
-        ]
-
     switch (interaction.options.getSubcommand()) {
         case "server":
-            interaction.editReply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle(guild.name)
-                        .setThumbnail(guild.iconURL())
-                        .setDescription(`Age: ${moment(guild.createdAt).fromNow(true)}\nID: ${guild.id}`)
-                        .addField("Total members", guild.memberCount.toString(), true)
-                        .addField("Bots", guild.members.cache.filter(m => m.user.bot).size.toString(), true)
-                        .addField("Humans", guild.members.cache.filter(m => !m.user.bot).size.toString(), true)
-                        .addField("Owner", guild.members.cache.get(guild.ownerId).toString(), false)
-                        .addField("Channel count", guild.channels.cache.size.toString(), true)
-                        .addField("Rules", guild.rulesChannel?.toString() || "Unset", true)
-                        .addField("AFK", guild.afkChannel?.toString() || "Unset", true)
-                        .setTimestamp()
-                ],
-                components: comps
+            var comps: MessageActionRow[] = []
+            if (interaction.guild.rulesChannel.lastMessage)
+                comps = [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setStyle("LINK")
+                                .setLabel("Rules channel")
+                                .setURL(guild.rulesChannel.lastMessage.url)
+                        )
+                ]
+
+            guild.members.fetch().then(members => {
+                interaction.editReply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle(guild.name)
+                            .setThumbnail(guild.iconURL())
+                            .setDescription(`Age: ${moment(guild.createdAt).fromNow(true)}\nID: ${guild.id}`)
+                            .addField("Total members", guild.memberCount.toString(), true)
+                            .addField("Bots", members.filter(m => m.user.bot).size.toString(), true)
+                            .addField("Humans", members.filter(m => m.user.bot == false).size.toString(), true)
+                            .addField("Owner", members.get(guild.ownerId).toString(), false)
+                            .addField("Channel count", guild.channels.cache.filter(c => c.type != "GUILD_CATEGORY").size.toString(), true)
+                            .addField("Rules", guild.rulesChannel?.toString() || "Unset", true)
+                            .addField("AFK", guild.afkChannel?.toString() || "Unset", true)
+                            .setTimestamp()
+                    ],
+                    components: comps
+                })
             })
             break
         case "bot":
