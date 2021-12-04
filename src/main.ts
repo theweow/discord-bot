@@ -3,7 +3,6 @@ import Discord from "discord.js"
 import { REST } from "@discordjs/rest"
 import { Routes } from "discord-api-types/v9"
 import * as fs from "fs"
-const config = require("../config.json")
 import * as logger from "./logger"
 import registerHandlers from "./registerHandlers"
 
@@ -16,28 +15,6 @@ const client = new Discord.Client({
         Discord.Intents.FLAGS.GUILD_MEMBERS,
     ]
 })
-
-// Slash commands
-const commands = []
-const commandFiles = fs.readdirSync(__dirname + "/commands")
-
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`)
-    commands.push(command.data.toJSON())
-}
-
-const rest = new REST({ version: '9' }).setToken(env.WEOW_BOT_TOKEN);
-
-(async () => {
-    try {
-        await rest.put(
-            Routes.applicationCommands(config.clientId),
-            { body: commands },
-        )
-    } catch (error) {
-        logger.error(error)
-    }
-})()
 
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand())
@@ -64,6 +41,28 @@ client.once("ready", () => {
             })
         })
     })
+
+    // Slash commands
+    const commands = []
+    const commandFiles = fs.readdirSync(__dirname + "/commands")
+
+    for (const file of commandFiles) {
+        const command = require(`./commands/${file}`)
+        commands.push(command.data.toJSON())
+    }
+
+    const rest = new REST({ version: '9' }).setToken(env.WEOW_BOT_TOKEN);
+
+    (async () => {
+        try {
+            await rest.put(
+                Routes.applicationCommands(client.user.id),
+                { body: commands },
+            )
+        } catch (error) {
+            logger.error(error)
+        }
+    })()
 })
 
 registerHandlers(client)
