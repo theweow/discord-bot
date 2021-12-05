@@ -1,8 +1,8 @@
-import { MessageEmbed } from "discord.js"
+import { Interaction, MessageEmbed } from "discord.js"
 import * as logger from "../logger"
 
-export async function execute(interaction) {
-    if (interaction.isCommand())
+export async function execute(interaction: Interaction) {
+    if (interaction.isCommand()) {
         try {
             await interaction.deferReply({ ephemeral: true })
             require(`../commands/${interaction.commandName}`).execute(interaction)
@@ -17,4 +17,16 @@ export async function execute(interaction) {
             })
             logger.error(err.toString())
         }
+        return
+    }
+
+    if (interaction.isButton()) {
+        try {
+            await interaction.deferReply({ ephemeral: true })
+            require(`../components/${interaction.customId}`).execute(interaction)
+        } catch (err) {
+            logger.error(err)
+        }
+        return
+    }
 }
