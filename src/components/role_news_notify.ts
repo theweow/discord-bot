@@ -2,6 +2,8 @@ import { ButtonInteraction, GuildMemberRoleManager, MessageEmbed } from "discord
 import { roles } from "../config.json"
 
 export function execute(interaction: ButtonInteraction) {
-    (interaction.member.roles as GuildMemberRoleManager).add(roles.news_notify)
+    const rm = interaction.member.roles as GuildMemberRoleManager
+    const role = roles.news_notify
+    rm.resolve(role) ? rm.remove(role) : rm.add(role)
     interaction.update({})
 }
