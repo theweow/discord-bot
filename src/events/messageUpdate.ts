@@ -13,8 +13,8 @@ export function execute(oldMsg: Message, newMsg: Message) {
                 .setTitle("Message was edited")
                 .addField("Old content", `> ${oldMsg.content}`, false)
                 .addField("New content", `> ${newMsg.content}`, false)
-                .addField("Author", `> ${msg.author}`, true)
-                .addField("Channel", `> ${msg.channel}`, true)
+                .addField("Author", msg.author.toString(), true)
+                .addField("Channel", msg.channel.toString(), true)
                 .setTimestamp()
         ],
         components: [

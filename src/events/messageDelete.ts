@@ -21,9 +21,9 @@ export function execute(msg: Message) {
                 .setColor("#d50000")
                 .setTitle("Message was deleted")
                 .addField("Content", `> ${msg.content}`, false)
-                .addField("Author", `> ${msg.author}`, true)
-                .addField("Channel", `> ${msg.channel}`, true)
-                .addField("Reason", `> ${reason}`, true)
+                .addField("Author", msg.author.toString(), true)
+                .addField("Channel", msg.channel.toString(), true)
+                .addField("Reason", reason, true)
                 .setTimestamp()
         ]
     }

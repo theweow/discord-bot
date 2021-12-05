@@ -30,9 +30,9 @@ export function messageFilter(msg: Message): boolean {
                     .setTitle("Suspicious message detected")
                     .setColor("#ff6d00")
                     .addField("Content", `> ${msg.content}`, false)
-                    .addField("Author", `> ${msg.author}`, true)
-                    .addField("Channel", `> ${msg.channel}`, true)
-                    .addField("Why", "> Contains link-like text", true)
+                    .addField("Author", msg.author.toString(), true)
+                    .addField("Channel", msg.channel.toString(), true)
+                    .addField("Why", "Contains link-like text", true)
                     .setTimestamp()
             ],
             components: [
