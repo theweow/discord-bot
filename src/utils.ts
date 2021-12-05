@@ -2,6 +2,14 @@ import { Message, MessageActionRow, MessageButton, MessageEmbed } from "discord.
 import { setAutoAction, setReason } from "./events/messageDelete"
 
 /**
+ * Generates relative timestamp text
+ * 
+ * @param s Timestamp (in seconds)
+ * @returns Discord relative timestamp text
+ */
+export const makeRTimestamp = (s: number): string => `<t:${Math.floor(s / 1000)}:R>`
+
+/**
  * Just waits
  * 
  * @param time time in milliseconds
@@ -72,4 +80,5 @@ export function messageFilter(msg: Message): boolean {
 export default {
     messageFilter: messageFilter,
     wait: wait,
+    makeRTimestamp: makeRTimestamp,
 }
