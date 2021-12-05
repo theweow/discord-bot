@@ -1,5 +1,5 @@
 import { REST } from "@discordjs/rest"
-import { Routes } from "discord-api-types"
+import { Routes } from "discord-api-types/v9"
 import { client } from "../main"
 import * as logger from "../logger"
 import fs from "fs"
@@ -11,7 +11,7 @@ export async function execute() {
     client.application.fetch().then(application => {
         application.commands.fetch().then(commands => {
             commands.each(command => {
-                const permissions = require(`./commands/${command.name}`).permissions
+                const permissions = require(`../commands/${command.name}`).permissions
                 client.guilds.cache.each(guild => command.permissions.set({ guild, permissions }))
             })
         })
@@ -19,10 +19,10 @@ export async function execute() {
 
     // Slash commands
     const commands = []
-    const commandFiles = fs.readdirSync(__dirname + "/commands")
+    const commandFiles = fs.readdirSync(__dirname + "/../commands")
 
     for (const file of commandFiles) {
-        const command = require(`./commands/${file}`)
+        const command = require(`../commands/${file}`)
         commands.push(command.data.toJSON())
     }
 
