@@ -16,7 +16,7 @@ export const data = new SlashCommandBuilder()
 
 export const permissions: ApplicationCommandPermissionData[] = []
 
-export function execute(interaction: CommandInteraction) {
+export async function execute(interaction: CommandInteraction) {
     const guild = interaction.guild
     switch (interaction.options.getSubcommand()) {
         case "server":

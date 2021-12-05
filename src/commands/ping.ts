@@ -9,6 +9,6 @@ export const data = new SlashCommandBuilder()
 
 export const permissions: ApplicationCommandPermissionData[] = []
 
-export function execute(interaction: CommandInteraction) {
+export async function execute(interaction: CommandInteraction) {
     interaction.editReply(`Ping: ${client.ws.ping}ms`)
 }

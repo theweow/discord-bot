@@ -22,7 +22,7 @@ export const permissions: ApplicationCommandPermissionData[] = [
     }
 ]
 
-export function execute(interaction: CommandInteraction) {
+export async function execute(interaction: CommandInteraction) {
     const member = interaction.options.getMember("member") as GuildMember
 
     if (member == undefined) {

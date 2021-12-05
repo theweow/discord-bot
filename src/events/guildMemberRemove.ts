@@ -1,6 +1,6 @@
 import { GuildMember, MessageEmbed } from "discord.js"
 
-export function execute(member: GuildMember) {
+export async function execute(member: GuildMember) {
     member.guild.systemChannel.send({
         embeds: [
             new MessageEmbed()

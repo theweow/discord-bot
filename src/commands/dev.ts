@@ -18,7 +18,7 @@ export const permissions: ApplicationCommandPermissionData[] = [
     }
 ]
 
-export function execute(interaction: CommandInteraction) {
+export async function execute(interaction: CommandInteraction) {
     if (interaction.options.getSubcommand() == "reload-events")
         process.exit(0)
     interaction.editReply("Successfully")

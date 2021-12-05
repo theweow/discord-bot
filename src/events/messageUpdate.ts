@@ -2,7 +2,7 @@ import { Message, MessageActionRow, MessageButton, MessageEmbed, TextChannel } f
 import { client } from "../main"
 import utils from "../utils"
 
-export function execute(oldMsg: Message, newMsg: Message) {
+export async function execute(oldMsg: Message, newMsg: Message) {
     const msg = newMsg
     if (msg.author == client.user || oldMsg.content == "" || oldMsg.content == newMsg.content) return
 

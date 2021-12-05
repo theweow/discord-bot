@@ -12,7 +12,7 @@ export function setAutoAction() {
     isAutoAction = true
 }
 
-export function execute(msg: Message) {
+export async function execute(msg: Message) {
     if (msg.content == "") return
 
     const logMsgData: MessageOptions = {

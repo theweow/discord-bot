@@ -2,7 +2,7 @@ import { Message } from "discord.js"
 import { client } from "../main"
 import utils from "../utils"
 
-export function execute(msg: Message) {
+export async function execute(msg: Message) {
     if (msg.author == client.user) return
     utils.messageFilter(msg)
 
