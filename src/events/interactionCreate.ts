@@ -5,7 +5,7 @@ export async function execute(interaction) {
     if (interaction.isCommand())
         try {
             await interaction.deferReply({ ephemeral: true })
-            require(`./commands/${interaction.commandName}`).execute(interaction)
+            require(`../commands/${interaction.commandName}`).execute(interaction)
         } catch (err) {
             interaction.editReply({
                 embeds: [
