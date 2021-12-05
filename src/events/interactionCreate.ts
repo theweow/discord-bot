@@ -22,7 +22,6 @@ export async function execute(interaction: Interaction) {
 
     if (interaction.isButton()) {
         try {
-            await interaction.deferReply({ ephemeral: true })
             require(`../components/${interaction.customId}`).execute(interaction)
         } catch (err) {
             logger.error(err)
