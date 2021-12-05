@@ -19,12 +19,17 @@ export const client = new Discord.Client({
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand())
         try {
-            await interaction.deferReply({
-                ephemeral: true
-            })
+            await interaction.deferReply({ ephemeral: true })
             require(`./commands/${interaction.commandName}`).execute(interaction)
         } catch (err) {
-            interaction.editReply(err.toString() || "Unable to get error")
+            interaction.editReply({
+                embeds: [
+                    new Discord.MessageEmbed()
+                        .setColor("#d50000")
+                        .setTitle("Error!")
+                        .setTimestamp()
+                ]
+            })
             logger.error(err.toString())
         }
 })
