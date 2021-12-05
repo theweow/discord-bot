@@ -1,6 +1,8 @@
 module.exports = {
-  apps: [{
-    script: "./build/main.js",
-    watch: './build'
-  }]
+    apps: [
+        {
+            script: "./build/main.js",
+            watch: './build'
+        }
+    ]
 }
