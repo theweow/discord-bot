@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
-import { ApplicationCommandPermissionData, CommandInteraction, MessageEmbed } from "discord.js"
+import { ApplicationCommandPermissionData, CommandInteraction, MessageActionRow, MessageButton } from "discord.js"
 import { client } from "../main"
 
 export const data = new SlashCommandBuilder()
