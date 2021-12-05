@@ -1,13 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { ApplicationCommandPermissionData, CommandInteraction } from "discord.js"
-import { updateHandlers } from "../registerHandlers"
 
 export const data = new SlashCommandBuilder()
     .setDefaultPermission(false)
     .setName("dev")
     .setDescription("Root command for dev-only commands")
     .addSubcommand(sub =>
-        sub.setName("reload-events")
+        sub.setName("reload")
             .setDescription("Reloads events")
     )
 
@@ -21,6 +20,6 @@ export const permissions: ApplicationCommandPermissionData[] = [
 
 export function execute(interaction: CommandInteraction) {
     if (interaction.options.getSubcommand() == "reload-events")
-        updateHandlers()
+        process.exit(0)
     interaction.editReply("Successfully")
 }

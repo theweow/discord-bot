@@ -1,10 +1,8 @@
 import { env } from "process"
 import Discord from "discord.js"
-import { REST } from "@discordjs/rest"
-import { Routes } from "discord-api-types/v9"
-import * as fs from "fs"
+import fs from "fs"
 import * as logger from "./logger"
-import registerHandlers from "./registerHandlers"
+import path from "path"
 
 // Init
 export const client = new Discord.Client({
@@ -16,61 +14,14 @@ export const client = new Discord.Client({
     ]
 })
 
-client.on('interactionCreate', async interaction => {
-    if (interaction.isCommand())
-        try {
-            await interaction.deferReply({ ephemeral: true })
-            require(`./commands/${interaction.commandName}`).execute(interaction)
-        } catch (err) {
-            interaction.editReply({
-                embeds: [
-                    new Discord.MessageEmbed()
-                        .setColor("#d50000")
-                        .setTitle("Error!")
-                        .setTimestamp()
-                ]
-            })
-            logger.error(err.toString())
-        }
-})
-
-// Ready event
-client.once("ready", () => {
-    logger.info(`${client.user.tag} is online!`)
-
-    client.application.fetch().then(application => {
-        application.commands.fetch().then(commands => {
-            commands.each(command => {
-                const permissions = require(`./commands/${command.name}`).permissions
-                client.guilds.cache.each(guild => command.permissions.set({ guild, permissions }))
-            })
-        })
-    })
-
-    // Slash commands
-    const commands = []
-    const commandFiles = fs.readdirSync(__dirname + "/commands")
-
-    for (const file of commandFiles) {
-        const command = require(`./commands/${file}`)
-        commands.push(command.data.toJSON())
-    }
-
-    const rest = new REST({ version: '9' }).setToken(env.WEOW_BOT_TOKEN);
-
-    (async () => {
-        try {
-            await rest.put(
-                Routes.applicationCommands(client.user.id),
-                { body: commands },
-            )
-        } catch (error) {
-            logger.error(error)
-        }
-    })()
-})
-
-registerHandlers()
+const eventFiles = fs.readdirSync(__dirname + "/events")
+for (const eventFile of eventFiles) {
+    const basename = path.basename(eventFile, path.extname(eventFile))
+    logger.progress("Register event:", basename)
+    client.removeAllListeners(basename)
+    client.on(basename, require(`./events/${eventFile}`).execute)
+    logger.success()
+}
 
 // Login
 client.login(env.WEOW_BOT_TOKEN)
