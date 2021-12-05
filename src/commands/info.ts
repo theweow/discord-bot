@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders"
 import { ApplicationCommandPermissionData, CategoryChannel, CommandInteraction, MessageActionRow, MessageButton, MessageEmbed } from "discord.js"
 import moment from "moment"
 import { client } from "../main"
+import { makeRTimestamp } from "../utils"
 
 export const data = new SlashCommandBuilder()
     .setDefaultPermission(true)
@@ -38,14 +39,11 @@ export async function execute(interaction: CommandInteraction) {
                         new MessageEmbed()
                             .setTitle(guild.name)
                             .setThumbnail(guild.iconURL())
-                            .setDescription(`Age: ${moment(guild.createdAt).fromNow(true)}\nID: ${guild.id}`)
-                            .addField("Total members", guild.memberCount.toString(), true)
-                            .addField("Bots", members.filter(m => m.user.bot).size.toString(), true)
-                            .addField("Humans", members.filter(m => m.user.bot == false).size.toString(), true)
-                            .addField("Owner", members.get(guild.ownerId).toString(), false)
-                            .addField("Channel count", guild.channels.cache.filter(c => c.type != "GUILD_CATEGORY").size.toString(), true)
-                            .addField("Rules", guild.rulesChannel?.toString() || "Unset", true)
-                            .addField("AFK", guild.afkChannel?.toString() || "Unset", true)
+                            .setDescription(`Was created ${makeRTimestamp(guild.createdTimestamp)}`)
+                            .addField("Members", `Total: ${guild.memberCount}\nHumans: ${members.filter(m => !m.user.bot).size}\nBots: ${members.filter(m => m.user.bot).size}`, true)
+                            .addField("Owner", `Tag: ${members.get(guild.ownerId)}\nID: ${guild.ownerId}`, true)
+                            .addField("Channels", `Total: ${guild.channels.cache.size}\nCategories: ${guild.channels.cache.filter(c => c.type == "GUILD_CATEGORY").size}\nText: ${guild.channels.cache.filter(c => c.isText()).size}\nVoice: ${guild.channels.cache.filter(c => c.isVoice()).size}`, true)
+                            .addField("Special channels", `Rules: ${guild.rulesChannel}\nAFK: ${guild.afkChannel}\nSystem: ${guild.systemChannel}`, true)
                             .setTimestamp()
                     ],
                     components: comps
